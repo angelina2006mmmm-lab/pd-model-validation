@@ -1,0 +1,38 @@
+{
+  "data_quality": {
+    "rows": 6000,
+    "columns": 10,
+    "duplicates": 0,
+    "default_rate": 0.218,
+    "missing_by_column": {
+      "current_ratio": 90,
+      "years_in_business": 60,
+      "employees": 48
+    }
+  },
+  "cross_validation": {
+    "baseline_roc_auc_mean": 0.7273657967961207,
+    "baseline_roc_auc_std": 0.031488439895445246
+  },
+  "baseline_logistic_regression": {
+    "roc_auc": 0.7296027075602969,
+    "gini": 0.45920541512059376,
+    "ks": 0.3502869897959183,
+    "precision": 0.3608815426997245,
+    "recall": 0.6683673469387755,
+    "f1": 0.46869409660107336,
+    "log_loss": 0.609995034426328,
+    "brier_score": 0.210464511063493
+  },
+  "alternative_hist_gradient_boosting": {
+    "roc_auc": 0.7155757189239333,
+    "gini": 0.4311514378478667,
+    "ks": 0.3320384972170686,
+    "precision": 0.5955882352941176,
+    "recall": 0.2066326530612245,
+    "f1": 0.3068181818181818,
+    "log_loss": 0.47152753988002144,
+    "brier_score": 0.15104058327335723
+  },
+  "score_psi_train_vs_validation": 0.0046520031629243876
+}

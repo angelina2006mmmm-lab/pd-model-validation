@@ -60,7 +60,7 @@ def test_bad_model_contract(tmp_path):
 
 def test_v2_artifact_reproducible(tmp_path):
  a=train_export(tmp_path/'v2.json',version='1.1.0')
- assert_artifact_equivalent(a,PDModel(version='1.1.0').info
+ assert_artifact_equivalent(a,PDModel(version='1.1.0').info)
  assert a['version']=='1.1.0' and a['test_roc_auc']>.5
  assert a['test_roc_auc']==PDModel(version='1.1.0').info['test_roc_auc']
 

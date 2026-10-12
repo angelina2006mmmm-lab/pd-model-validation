@@ -18,7 +18,7 @@ All inputs are **synthetic**; no Sberbank systems, borrower data, approved lendi
 | Documentation | Machine-readable JSON, Markdown stakeholder report, data-quality SQL and methodology notes |
 | Reproducible automation | pytest unit/integration tests; GitHub Actions runs validation and publishes reports as artifacts |
 
-**The agent audit checks traces, not actual accuracy of a live LLM.** A separate [RiskOps project](../../riskops-rag-ai-agent) explores RAG/agents; this project targets independent model-risk monitoring.
+**The agent audit checks traces, not actual accuracy of a live LLM.** A separate [RiskOps project](https://github.com/angelina2006mmmm-lab/riskops-rag-ai-agent) explores RAG/agents; this project targets independent model-risk monitoring.
 
 ## Quick start
 
@@ -43,6 +43,22 @@ Output: `reports/validation_results.json` and `reports/independent_validation_re
 8. Publish a concise model-risk report for an independent reviewer.
 
 See [methodology](docs/methodology.md), [model implementation controls](docs/implementation_controls.md) and [SQL](sql/model_validation_checks.sql).
+
+
+## Reproduced CI results (2026-10-12)
+
+[Successful independent validation workflow](https://github.com/angelina2006mmmm-lab/pd-model-validation/actions/runs/38267898317) — **19 tests passed**.
+
+- Synthetic training / validation / 2025 OOT: **2428 / 770 / 1602** applications
+- Validation ROC-AUC: Logistic Regression 0.72646, HistGradientBoosting 0.70326; champion selected on validation only
+- Champion OOT: ROC-AUC **0.72165**, Gini 0.4433, KS 0.35882, Brier 0.0968, ECE 0.01715
+- Challenger OOT ROC-AUC: **0.69333**
+- Score PSI train → OOT: **0.03759**
+- Golden-score audit: intentionally swapped two features, **120/120** predictions differed (maximum absolute PD delta 0.152484)
+- AI-agent trace audit: **5/8** synthetic traces had planted control failures
+- Hypothetical stress input +0.25 raised mean predicted PD 0.10347 → 0.11406; illustrative expected loss proxy 39,818,367.38 → 43,882,613.08, assuming LGD=45%.
+
+[Full verified metrics](reports/validation_results.json) · [Stakeholder report](reports/independent_validation_report.md)
 
 ## Scope boundaries
 

@@ -1,0 +1,242 @@
+{
+  "scope": "Independent student validation with synthetic applications and mocked agent traces",
+  "seed": 1729,
+  "sample_counts": {
+    "train": 2428,
+    "validation": 770,
+    "out_of_time": 1602
+  },
+  "split": {
+    "train": "2023-01 through 2024-06",
+    "validation": "2024-07 through 2024-12",
+    "out_of_time": "2025-01 through 2025-12"
+  },
+  "features": [
+    "loan_amount",
+    "monthly_income",
+    "term_months",
+    "dti",
+    "utilization",
+    "credit_history_months",
+    "late_payments_12m",
+    "macro_stress",
+    "product_type"
+  ],
+  "selection": "Validation ROC-AUC, OOT untouched until final report",
+  "validation_models": {
+    "LogisticRegression": {
+      "n": 770,
+      "event_rate": 0.10519,
+      "roc_auc": 0.72646,
+      "gini": 0.45292,
+      "ks": 0.42133,
+      "pr_auc": 0.29029,
+      "brier": 0.08516,
+      "log_loss": 0.30011,
+      "ece": 0.01729
+    },
+    "HistGradientBoosting": {
+      "n": 770,
+      "event_rate": 0.10519,
+      "roc_auc": 0.70326,
+      "gini": 0.40651,
+      "ks": 0.35163,
+      "pr_auc": 0.26141,
+      "brier": 0.08716,
+      "log_loss": 0.30907,
+      "ece": 0.02231
+    }
+  },
+  "selected_model": "LogisticRegression",
+  "oot_models": {
+    "LogisticRegression": {
+      "n": 1602,
+      "event_rate": 0.12047,
+      "roc_auc": 0.72165,
+      "gini": 0.4433,
+      "ks": 0.35882,
+      "pr_auc": 0.31291,
+      "brier": 0.0968,
+      "log_loss": 0.33207,
+      "ece": 0.01715
+    },
+    "HistGradientBoosting": {
+      "n": 1602,
+      "event_rate": 0.12047,
+      "roc_auc": 0.69333,
+      "gini": 0.38666,
+      "ks": 0.31673,
+      "pr_auc": 0.25491,
+      "brier": 0.10046,
+      "log_loss": 0.34721,
+      "ece": 0.0303
+    }
+  },
+  "review_threshold_from_validation": 0.16,
+  "business_cost_proxy_on_oot": 0.48252,
+  "score_psi_train_to_oot": 0.03759,
+  "monthly_oot_monitoring": [
+    {
+      "month": "2025-01",
+      "n": 136,
+      "roc_auc": 0.70833,
+      "brier": 0.07358,
+      "event_rate": 0.08824
+    },
+    {
+      "month": "2025-02",
+      "n": 126,
+      "roc_auc": 0.83333,
+      "brier": 0.07642,
+      "event_rate": 0.09524
+    },
+    {
+      "month": "2025-03",
+      "n": 139,
+      "roc_auc": 0.74898,
+      "brier": 0.09228,
+      "event_rate": 0.11511
+    },
+    {
+      "month": "2025-04",
+      "n": 123,
+      "roc_auc": 0.74257,
+      "brier": 0.13188,
+      "event_rate": 0.17886
+    },
+    {
+      "month": "2025-05",
+      "n": 135,
+      "roc_auc": 0.71002,
+      "brier": 0.13421,
+      "event_rate": 0.17037
+    },
+    {
+      "month": "2025-06",
+      "n": 128,
+      "roc_auc": 0.81555,
+      "brier": 0.10603,
+      "event_rate": 0.14844
+    },
+    {
+      "month": "2025-07",
+      "n": 137,
+      "roc_auc": 0.644,
+      "brier": 0.0798,
+      "event_rate": 0.08759
+    },
+    {
+      "month": "2025-08",
+      "n": 139,
+      "roc_auc": 0.61249,
+      "brier": 0.10961,
+      "event_rate": 0.1295
+    },
+    {
+      "month": "2025-09",
+      "n": 154,
+      "roc_auc": 0.67889,
+      "brier": 0.08821,
+      "event_rate": 0.1039
+    },
+    {
+      "month": "2025-10",
+      "n": 126,
+      "roc_auc": 0.75495,
+      "brier": 0.09187,
+      "event_rate": 0.11905
+    },
+    {
+      "month": "2025-11",
+      "n": 136,
+      "roc_auc": 0.7708,
+      "brier": 0.08963,
+      "event_rate": 0.11029
+    },
+    {
+      "month": "2025-12",
+      "n": 123,
+      "roc_auc": 0.62797,
+      "brier": 0.09092,
+      "event_rate": 0.10569
+    }
+  ],
+  "stress_scenario": {
+    "macro_shock": 0.25,
+    "mean_pd_baseline": 0.10347,
+    "mean_pd_shocked": 0.11406,
+    "expected_loss_proxy_baseline": 39818367.38,
+    "expected_loss_proxy_shocked": 43882613.08,
+    "assumption": "LGD=.45, exposure=loan amount; illustrative scenario only"
+  },
+  "implementation_consistency": {
+    "scenario": "deliberately swapped dti / utilization fields in serving adapter",
+    "checked": 120,
+    "mismatches": 120,
+    "max_absolute_probability_delta": 0.152484,
+    "severity": "incident"
+  },
+  "agent_trace_audit": {
+    "cases": 8,
+    "passed": 3,
+    "failed": 5,
+    "findings": [
+      {
+        "id": "T01",
+        "passed": true,
+        "issues": []
+      },
+      {
+        "id": "T02",
+        "passed": true,
+        "issues": []
+      },
+      {
+        "id": "T03",
+        "passed": false,
+        "issues": [
+          "missing_citation"
+        ]
+      },
+      {
+        "id": "T04",
+        "passed": false,
+        "issues": [
+          "stale_policy_version"
+        ]
+      },
+      {
+        "id": "T05",
+        "passed": true,
+        "issues": []
+      },
+      {
+        "id": "T06",
+        "passed": false,
+        "issues": [
+          "unrecognized_policy"
+        ]
+      },
+      {
+        "id": "T07",
+        "passed": false,
+        "issues": [
+          "unapproved_tool"
+        ]
+      },
+      {
+        "id": "T08",
+        "passed": false,
+        "issues": [
+          "invalid_status"
+        ]
+      }
+    ],
+    "limits": "Hand-authored synthetic traces; no live LLM or real business data."
+  },
+  "alerts": [
+    "implementation_mapping_incident",
+    "synthetic_agent_trace_findings"
+  ],
+  "note": "Alert thresholds, costs and LGD are illustrative. No Basel compliance or production deployment."
+}

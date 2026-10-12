@@ -8,7 +8,7 @@ def test_risk_groups_cover_all_oot_rows(tmp_path):
     assert sum(g["applications"] for g in groups)==report["n_out_of_time"]
     assert all(0<=g["average_pd"]<=1 and 0<=g["observed_default_rate"]<=1 for g in groups)
     assert all(a["average_pd"]<=b["average_pd"] for a,b in zip(groups,groups[1:]))
-    assert (tmp_path/"business_brief.md").exists()
+    assert (tmp_path/"risk_segmentation.md").exists()
 
 def test_reproducible_business_report():
     a=create_business_brief(n=1200,seed=42)

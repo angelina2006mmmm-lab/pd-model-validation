@@ -1,0 +1,33 @@
+name: Model Risk Validation research checks
+on:
+  push:
+    paths:
+      - 'extensions/model-risk-validation/**'
+      - '.github/workflows/model-risk-validation.yml'
+  pull_request:
+    paths:
+      - 'extensions/model-risk-validation/**'
+  workflow_dispatch:
+jobs:
+  independent-validation:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: extensions/model-risk-validation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install validation stack
+        run: python -m pip install -r requirements.txt
+      - name: Unit and integration tests
+        run: PYTHONPATH=. python -m pytest -q
+      - name: Independent validation / monitoring report
+        run: PYTHONPATH=. python -m modelrisk.validation
+      - uses: actions/upload-artifact@v4
+        with:
+          name: model-risk-validation-reports
+          path: |
+            extensions/model-risk-validation/reports/validation_results.json
+            extensions/model-risk-validation/reports/independent_validation_report.md

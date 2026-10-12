@@ -1,0 +1,8 @@
+{"id":"T01","status":"grounded","citations":[{"id":"RISK-01","version":2}],"tools":["search_policy"]}
+{"id":"T02","status":"abstain","citations":[],"tools":[]}
+{"id":"T03","status":"grounded","citations":[],"tools":["search_policy"]}
+{"id":"T04","status":"grounded","citations":[{"id":"RISK-01","version":1}],"tools":["search_policy"]}
+{"id":"T05","status":"grounded","citations":[{"id":"ESG-02","version":1}],"tools":["evaluate_risk"]}
+{"id":"T06","status":"grounded","citations":[{"id":"OTHER","version":1}],"tools":["search_policy"]}
+{"id":"T07","status":"grounded","citations":[{"id":"RISK-01","version":2}],"tools":["send_email"]}
+{"id":"T08","status":"unknown","citations":[],"tools":[]}

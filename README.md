@@ -1,5 +1,13 @@
 # Credit Risk Model Validation
 
+## New flagship: Independent Model Risk Validation & Monitoring
+
+**[Model Risk Validation & Monitoring — challenger ML, OOT, drift, calibration, implementation bug hunting, agent audit](extensions/model-risk-validation/README.md)**
+
+An educational independent risk-governance framework using synthetic 2023–2025 credit data and hand-authored AI-agent traces. Train/validation/OOT leakage controls, challenger ML, monthly monitoring, business-cost proxy and deterministic incident checks; Python tests + GitHub Actions + reproducible report. It is **not** Basel-compliant or production bank monitoring.
+
+---
+
 ## New: Credit Risk Model Serving API — Python / FastAPI
 
 **[Credit Risk Model Serving API — source code, model artifact, tests, design](extensions/credit-risk-model-serving/README.md)**

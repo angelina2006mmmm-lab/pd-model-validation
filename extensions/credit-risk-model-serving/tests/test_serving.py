@@ -47,7 +47,7 @@ def test_export_reproducible(tmp_path):
  a=train_export(tmp_path/'a.json');b=train_export(tmp_path/'b.json')
  assert a==b and a['test_roc_auc']>.5
 def test_checked_in_export_matches(tmp_path):
- assert train_export(tmp_path/'a.json')==PDModel().info
+ assert_artifact_equivalent(train_export(tmp_path/'a.json'),PDModel().info)
 def test_data_reproducibility():
  a,y=generate(20,28);b,z=generate(20,28)
  assert (a==b).all() and (y==z).all()
@@ -60,7 +60,7 @@ def test_bad_model_contract(tmp_path):
 
 def test_v2_artifact_reproducible(tmp_path):
  a=train_export(tmp_path/'v2.json',version='1.1.0')
- assert a==PDModel(version='1.1.0').info
+ assert_artifact_equivalent(a,PDModel(version='1.1.0').info
  assert a['version']=='1.1.0' and a['test_roc_auc']>.5
  assert a['test_roc_auc']==PDModel(version='1.1.0').info['test_roc_auc']
 
@@ -95,3 +95,15 @@ def test_unknown_version_rejected():
 def test_model_endpoint_says_test_not_oot():
  meta=client.get('/v1/model').json()
  assert 'test_roc_auc' in meta and 'oot_roc_auc' not in meta
+
+def assert_artifact_equivalent(actual,expected):
+    """Sklearn minor releases can change coefficients by ~1e-16."""
+    import math
+    for k in ('features','samples','version','kind','trained_on'):
+        assert actual[k]==expected[k]
+    for k in ('coefficients','means','scales'):
+        assert len(actual[k])==len(expected[k])
+        for a,b in zip(actual[k],expected[k]):
+            assert math.isclose(a,b,rel_tol=1e-10,abs_tol=1e-12)
+    for k in ('intercept','review_threshold','test_roc_auc'):
+        assert math.isclose(actual[k],expected[k],rel_tol=1e-10,abs_tol=1e-8)

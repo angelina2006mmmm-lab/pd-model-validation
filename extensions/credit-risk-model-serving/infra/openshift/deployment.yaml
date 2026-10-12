@@ -1,0 +1,33 @@
+# Example OpenShift deployment; not deployed
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: credit-risk-model-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: credit-risk-model-api
+  template:
+    metadata:
+      labels:
+        app: credit-risk-model-api
+    spec:
+      containers:
+        - name: api
+          image: registry.example.org/risk/credit-risk-model-api:v1.0.0
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]

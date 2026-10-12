@@ -1,0 +1,17 @@
+// Sample Jenkins pipeline, not executed in Jenkins.
+pipeline {
+    agent any
+    stages {
+        stage('Install and test') {
+            steps {
+                sh 'python3 -m venv .venv && .venv/bin/pip install -r requirements.txt'
+                sh '.venv/bin/python -m pytest -q'
+            }
+        }
+        stage('Container build') {
+            steps {
+                sh 'docker build -t credit-risk-model-api:demo .'
+            }
+        }
+    }
+}

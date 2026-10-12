@@ -1,5 +1,13 @@
 # Credit Risk Model Validation
 
+## New: Credit Risk Model Serving API — Python / FastAPI
+
+**[Credit Risk Model Serving API — source code, model artifact, tests, design](extensions/credit-risk-model-serving/README.md)**
+
+Versioned REST implementation of a PD risk-strategy prototype: trained sklearn logistic model, JSON artifact, Pydantic validation, synthetic test ROC-AUC, model version, structured logs with no raw applicant data, and 15 local unit/integration tests. Nginx/Jenkins/OpenShift examples are templates and have NOT been deployed.
+
+---
+
 ## New: Credit Risk Scoring - CatBoost vs Logistic Regression
 
 A reproducible **credit underwriting PD** pet-project with 4,200 synthetic applications, chronological train/validation/out-of-time split, leakage checks, validation-based model selection, CatBoost, Logistic Regression, ROC-AUC/Gini/KS/Brier/PSI, SQL checks and 10 automated tests.

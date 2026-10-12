@@ -1,0 +1,54 @@
+{
+  "dataset": "synthetic applications joined with synthetic monthly macro conditions",
+  "n_train": 2128,
+  "n_validation": 690,
+  "n_oot": 1382,
+  "time_split": {
+    "train": "2023-01..2024-06",
+    "validation": "2024-07..2024-12",
+    "oot": "2025-01..2025-12"
+  },
+  "features": [
+    "loan_to_income",
+    "debt_to_income",
+    "utilization",
+    "credit_history_months",
+    "late_payments_12m",
+    "macro_stress",
+    "product"
+  ],
+  "excluded_from_features": [
+    "application_id",
+    "application_month",
+    "default_12m"
+  ],
+  "validation": {
+    "LogisticRegression": {
+      "validation_roc_auc": 0.69266
+    },
+    "HistGradientBoosting": {
+      "validation_roc_auc": 0.65916
+    }
+  },
+  "selected_model": "LogisticRegression",
+  "oot_metrics": {
+    "roc_auc": 0.65472,
+    "pr_auc": 0.19318,
+    "brier": 0.08402,
+    "log_loss": 0.30644
+  },
+  "inference_contract": {
+    "input_fields": [
+      "loan_to_income",
+      "debt_to_income",
+      "utilization",
+      "credit_history_months",
+      "late_payments_12m",
+      "macro_stress",
+      "product"
+    ],
+    "output": "probability of default within 12 months",
+    "threshold": "business policy not defined"
+  },
+  "limitations": "Synthetic data; not a bank credit strategy, no real benefit, compliance or production guarantees"
+}

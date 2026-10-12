@@ -43,7 +43,7 @@ python -m pip install -r requirements-spark.txt
 python -m pipeline.spark_etl
 ```
 
-GitHub Actions runs the ordinary ML tests and Spark integration test in separate jobs. PySpark and its parity results should only be described as **verified** after the corresponding CI job is green.
+**Verified GitHub Actions:** [the ML and PySpark integration jobs both passed](https://github.com/angelina2006mmmm-lab/pd-model-validation/actions/runs/38271719310). The Spark parity test compared 240 synthetic rows between Spark and Pandas. Local non-Spark pytest: **8 passed**. Production Spark operation is not claimed.
 
 ## Scope
 

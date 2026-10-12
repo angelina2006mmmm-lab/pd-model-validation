@@ -1,5 +1,15 @@
 # Credit Risk Model Validation
 
+## New: Credit Risk Scoring - CatBoost vs Logistic Regression
+
+A reproducible **credit underwriting PD** pet-project with 4,200 synthetic applications, chronological train/validation/out-of-time split, leakage checks, validation-based model selection, CatBoost, Logistic Regression, ROC-AUC/Gini/KS/Brier/PSI, SQL checks and 10 automated tests.
+
+**[Open scoring project and code](extensions/credit-risk-scoring-catboost)** · [OOT report](extensions/credit-risk-scoring-catboost/reports/report.md)
+
+Synthetic 2025 holdout: Logistic Regression (selected by validation ROC-AUC) 0.7103, CatBoost challenger 0.7020. Educational data and metrics only; no real banking outcomes.
+
+---
+
 Pet project for a Data Science / Model Validation internship.
 
 The project demonstrates an end-to-end validation workflow for a synthetic **PD (Probability of Default)** model on tabular data:

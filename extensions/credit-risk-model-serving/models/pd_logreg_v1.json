@@ -33,5 +33,5 @@
     "validation": 600,
     "test": 600
   },
-  "oot_roc_auc": 0.7363
+  "test_roc_auc": 0.7363
 }

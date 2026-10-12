@@ -45,7 +45,7 @@ def test_bad_request_id_sanitized():
  assert ' ' not in r.headers['X-Request-ID']
 def test_export_reproducible(tmp_path):
  a=train_export(tmp_path/'a.json');b=train_export(tmp_path/'b.json')
- assert a==b and a['oot_roc_auc']>.5
+ assert a==b and a['test_roc_auc']>.5
 def test_checked_in_export_matches(tmp_path):
  assert train_export(tmp_path/'a.json')==PDModel().info
 def test_data_reproducibility():
@@ -56,3 +56,42 @@ def test_bad_model_contract(tmp_path):
  a=train_export(tmp_path/'a.json');a['features'].append('bad')
  x=tmp_path/'bad.json';x.write_text(json.dumps(a))
  with pytest.raises(ValueError):PDModel(x)
+
+
+def test_v2_artifact_reproducible(tmp_path):
+ a=train_export(tmp_path/'v2.json',version='1.1.0')
+ assert a==PDModel(version='1.1.0').info
+ assert a['version']=='1.1.0' and a['test_roc_auc']>.5
+ assert a['test_roc_auc']==PDModel(version='1.1.0').info['test_roc_auc']
+
+def test_v1_v2_prediction_and_rollback():
+ original=PDModel(version='1.0.0')
+ candidate=PDModel(version='1.1.0')
+ assert original.info['version']!=candidate.info['version']
+ pd1,_=original.predict(VALID)
+ pd2,_=candidate.predict(VALID)
+ assert abs(pd1-pd2)>1e-7
+ rolled_back=PDModel(version='1.0.0')
+ assert rolled_back.predict(VALID)==original.predict(VALID)
+
+def test_api_deployment_switch_then_rollback(monkeypatch):
+ import serving.api as service
+ with monkeypatch.context() as m:
+  m.setattr(service,'model',PDModel(version='1.1.0'))
+  active=client.post('/v1/score',json=VALID).json()
+  assert active['model_version']=='1.1.0'
+  assert client.get('/v1/model').json()['model_version']=='1.1.0'
+ with monkeypatch.context() as m:
+  m.setattr(service,'model',PDModel(version='1.0.0'))
+  restored=client.post('/v1/score',json=VALID).json()
+  assert restored['model_version']=='1.0.0'
+  assert restored['default_probability']!=active['default_probability']
+
+def test_unknown_version_rejected():
+ import pytest
+ with pytest.raises(ValueError,match='Unsupported model version'):
+  PDModel(version='../../unexpected')
+
+def test_model_endpoint_says_test_not_oot():
+ meta=client.get('/v1/model').json()
+ assert 'test_roc_auc' in meta and 'oot_roc_auc' not in meta

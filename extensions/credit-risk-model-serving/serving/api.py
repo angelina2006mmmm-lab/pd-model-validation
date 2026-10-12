@@ -1,5 +1,5 @@
 """Versioned PD scoring REST API, synthetic demonstration only."""
-import json,logging,time
+import json,logging,time,os
 from collections import Counter
 from threading import Lock
 from uuid import uuid4
@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel,Field,ConfigDict
 from .model import PDModel
 
-model=PDModel()
+model=PDModel(version=os.getenv('PD_MODEL_VERSION','1.0.0'))
 logger=logging.getLogger('risk_model_serving')
 logger.setLevel(logging.INFO)
 if not logger.handlers:
@@ -50,7 +50,7 @@ async def request_log(request:Request,call_next):
 def health():return {'status':'ok','model_version':model.info['version']}
 @app.get('/v1/model')
 def version():return {'model_version':model.info['version'],'features':model.info['features'],
- 'training_data':model.info['trained_on'],'oot_roc_auc':model.info['oot_roc_auc']}
+ 'training_data':model.info['trained_on'],'test_roc_auc':model.info['test_roc_auc']}
 @app.post('/v1/score')
 def score(payload:Application):
  p,band=model.predict(payload.model_dump())

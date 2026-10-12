@@ -9,6 +9,9 @@
 | FR-05 | Log diagnosis without PII | JSON request_id, path, status, version, latency; no applicant fields |
 | FR-06 | Service readiness | GET /health; OpenAPI and Docker image example |
 | FR-07 | Tests and CI | pytest unit and integration tests run on push |
+| FR-08 | Controlled v1 to v2 model upgrade | Version changes from 1.0.0 to 1.1.0, API contract unchanged |
+| FR-09 | Rollback after a model change | Switching to 1.0.0 restores the exact original response |
+| FR-10 | Metric terminology | Reports test ROC-AUC only, not OOT on undated synthetic data |
 
 ## Change request template
 Problem and source system, acceptance owner, functional/business requirements, field data dictionary, constraints, API schema, model version, edge cases, test matrix, monitoring and rollback.

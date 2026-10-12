@@ -1,0 +1,37 @@
+{
+  "version": "1.1.0",
+  "kind": "logistic_regression",
+  "trained_on": "synthetic_only",
+  "features": [
+    "debt_to_income",
+    "missed_payments_12m",
+    "credit_history_months",
+    "utilization"
+  ],
+  "means": [
+    0.333228637586696,
+    0.6125,
+    121.50416666666666,
+    0.471209333381096
+  ],
+  "scales": [
+    0.16008280667056823,
+    0.7888876662744783,
+    67.2642734491266,
+    0.1985821014163051
+  ],
+  "coefficients": [
+    0.3507669138610218,
+    0.3783084959532734,
+    -0.48745501505311317,
+    0.3231641519682983
+  ],
+  "intercept": -2.580501507287408,
+  "review_threshold": 0.24,
+  "samples": {
+    "train": 2400,
+    "validation": 600,
+    "test": 600
+  },
+  "test_roc_auc": 0.7364
+}

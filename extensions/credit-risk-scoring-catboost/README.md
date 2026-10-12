@@ -2,7 +2,7 @@
 
 ## Extended experiment: XGBoost, LightGBM and PyTorch Transformers (October 2026)
 
-**Actually executed locally:** 15 pytest tests pass. Logistic Regression, XGBoost and LightGBM trained on the same chronological split of 4,200 **synthetic** credit applications; CatBoost remains a separate benchmark in this folder. Training and score reporting are reproducible with the fixed seed.
+**Actually executed locally:** 17 pytest tests pass. Logistic Regression, XGBoost and LightGBM trained on the same chronological split of 4,200 **synthetic** credit applications; CatBoost remains a separate benchmark in this folder. Training and score reporting are reproducible with the fixed seed.
 
 | Model | Validation ROC-AUC | OOT ROC-AUC | Score PSI |
 |---|---:|---:|---:|
@@ -73,3 +73,7 @@ The code includes chronological sample isolation, leakage checks, and a delibera
 Run: `PYTHONPATH=src python -m creditrisk.boosting_challengers`, `PYTHONPATH=src python -m creditrisk.transformer_demo`, `PYTHONPATH=src python -m creditrisk.business_brief`, `PYTHONPATH=src pytest -q`.
 
 All evaluation data are simulated, so the reported metrics cannot establish accuracy, fairness or regulatory fitness on real loan portfolios.
+
+## Business presentation: PD risk segmentation
+
+[Five independent out-of-time PD risk groups](reports/risk_segmentation.md) show application counts, average predicted PD and observed synthetic default rates, with conclusions for nontechnical stakeholders. The thresholds/bins were set using validation rather than OOT outcomes. All samples are synthetic; 17 local tests now pass.

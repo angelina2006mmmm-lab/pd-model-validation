@@ -60,3 +60,16 @@ The code includes chronological sample isolation, leakage checks, and a delibera
 - tests/test_model.py - 10 automated checks
 - sql/data_quality.sql - PostgreSQL checks
 - reports/metrics.json and reports/report.md - actual locally generated experiment results
+
+
+## Additional models, DL and business deliverables (verified locally)
+
+- **XGBoost / LightGBM**: both are actually trained in `src/creditrisk/boosting_challengers.py`; validation AUC 0.7170 / 0.7159, 2025 OOT AUC 0.6780 / 0.6799. Baseline logistic regression remains strongest on this synthetic sample.
+- **PyTorch TransformerEncoder**: `src/creditrisk/transformer_demo.py` trains a small network over six synthetic monthly feature snapshots. OOT ROC-AUC 0.5764 (not a pretrained model).
+- **Business-facing risk grouping**: `src/creditrisk/business_brief.py` computes five predicted-PD segments using boundaries from validation only, then compares predicted vs observed default rates on OOT without leakage. See [risk segmentation report](reports/risk_segmentation.md).
+- **Decision summary**: [business decision brief](reports/business_brief.md) explains why a simpler model is preferred, illustrative cost tradeoffs and deployment limitations.
+- **Local regression checks**: 17 pytest tests passed (baseline/CatBoost + XGBoost/LightGBM + Transformer + business segmentation). `PySpark` remains an illustrative script in the parent repo, not a claim of a production Spark pipeline.
+
+Run: `PYTHONPATH=src python -m creditrisk.boosting_challengers`, `PYTHONPATH=src python -m creditrisk.transformer_demo`, `PYTHONPATH=src python -m creditrisk.business_brief`, `PYTHONPATH=src pytest -q`.
+
+All evaluation data are simulated, so the reported metrics cannot establish accuracy, fairness or regulatory fitness on real loan portfolios.

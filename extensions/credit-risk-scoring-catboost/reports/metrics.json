@@ -1,0 +1,48 @@
+{
+  "experiment": "synthetic 12-month loan default modeling, not real bank data",
+  "seed": 42,
+  "records": {
+    "train": 2121,
+    "validation": 691,
+    "out_of_time_test": 1388
+  },
+  "model_selection_validation_auc": {
+    "LogisticRegression": 0.7328,
+    "CatBoost": 0.7073
+  },
+  "selected_model": "LogisticRegression",
+  "validation_threshold": 0.17,
+  "test": {
+    "n": 1388,
+    "default_rate": 0.1261,
+    "roc_auc": 0.7103,
+    "gini": 0.4207,
+    "pr_auc": 0.2978,
+    "ks": 0.3295,
+    "brier": 0.1028,
+    "log_loss": 0.3481,
+    "threshold": 0.17,
+    "tn": 928,
+    "fp": 285,
+    "fn": 83,
+    "tp": 92
+  },
+  "other_model_test": {
+    "CatBoost": {
+      "n": 1388,
+      "default_rate": 0.1261,
+      "roc_auc": 0.702,
+      "gini": 0.404,
+      "pr_auc": 0.2901,
+      "ks": 0.294,
+      "brier": 0.1022,
+      "log_loss": 0.3476
+    }
+  },
+  "stability_psi_train_vs_oot": 0.0892,
+  "hypothetical_cost": {
+    "false_negative": 5,
+    "false_positive": 1,
+    "oot_avg_cost": 0.5043
+  }
+}

@@ -7,7 +7,7 @@
 - Versioned scoring API: POST /v1/score, GET /health, /v1/model, /metrics and automatic /docs.
 - Pydantic schema, negative-case error handling (including NaN), deterministic prediction and risk-review band, model version in result.
 - Structured logs with request-id, route, status, latency and model version; no raw applicant data or IDs in logs.
-- **15 pytest unit/integration tests passed locally**; CI runs the same suite.
+- **20 pytest unit/integration tests passed locally**; CI runs the same suite.
 - Example Dockerfile, Compose, Nginx, Jenkins, OpenShift configurations and technical integration documents (**examples only, not deployed/executed**).
 
 ## Checked model versions and rollback (locally tested)

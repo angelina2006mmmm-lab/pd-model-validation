@@ -1,5 +1,29 @@
 # Credit Risk Scoring: CatBoost vs Logistic Regression
 
+## Extended experiment: XGBoost, LightGBM and PyTorch Transformers (October 2026)
+
+**Actually executed locally:** 15 pytest tests pass. Logistic Regression, XGBoost and LightGBM trained on the same chronological split of 4,200 **synthetic** credit applications; CatBoost remains a separate benchmark in this folder. Training and score reporting are reproducible with the fixed seed.
+
+| Model | Validation ROC-AUC | OOT ROC-AUC | Score PSI |
+|---|---:|---:|---:|
+| Logistic Regression | 0.7328 | 0.7103 | 0.0892 |
+| XGBoost | 0.7170 | 0.6780 | 0.3796 |
+| LightGBM | 0.7159 | 0.6799 | 0.4676 |
+
+**Selected on validation:** Logistic Regression. Lower OOT scores for the challengers are reported without cherry-picking. Thresholds are validation-selected, with **illustrative** 5:1 false-negative/false-positive costs. See [benchmark](reports/boosting_comparison.md), [business-oriented decision brief](reports/business_brief.md).
+
+A separate small PyTorch `TransformerEncoder` was **trained from scratch** on six synthetic financial-history observations. OOT ROC-AUC 0.5764; this is a learning experiment, not an effective lending model. [Transformer note](reports/transformer_brief.md).
+
+```bash
+pip install -r requirements.txt
+PYTHONPATH=src python -m creditrisk.boosting_challengers
+PYTHONPATH=src python -m creditrisk.transformer_demo
+PYTHONPATH=src pytest -q
+```
+
+No real banking data, validated decision process, production deployment or regulatory claims are made.
+
+
 Educational, reproducible probability-of-default (PD) pipeline for risk modeling. **Synthetic loan data only** (no bank data, no lending decisions).
 
 - Generate 4,200 synthetic applications (seed 42) with temporal shift and without demographic attributes.

@@ -1,0 +1,47 @@
+name: Retail credit DS pipeline — ML and Spark
+on:
+  push:
+    paths:
+      - 'extensions/retail-credit-ds-lifecycle/**'
+      - '.github/workflows/retail-credit-ds-lifecycle.yml'
+  pull_request:
+    paths:
+      - 'extensions/retail-credit-ds-lifecycle/**'
+  workflow_dispatch:
+jobs:
+  classic-ml:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: extensions/retail-credit-ds-lifecycle
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pytest -q
+      - run: python -m pipeline.experiment
+      - uses: actions/upload-artifact@v4
+        with:
+          name: retail-credit-ml-model-and-card
+          path: |
+            extensions/retail-credit-ds-lifecycle/reports/metrics.json
+            extensions/retail-credit-ds-lifecycle/reports/model_card.md
+            extensions/retail-credit-ds-lifecycle/reports/model.joblib
+  spark-feature-parity:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: extensions/retail-credit-ds-lifecycle
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-spark.txt
+      - run: python -m pipeline.spark_etl

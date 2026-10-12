@@ -1,5 +1,14 @@
 # Credit Risk Model Validation
 
+## New: Retail Credit DS Lifecycle (ML + PySpark)
+
+**[Retail Credit DS Lifecycle — data quality, two-source ETL, Spark, champion/challenger, OOT, model card](extensions/retail-credit-ds-lifecycle/README.md)**
+
+Portfolio demonstration: 4,200 **synthetic** loan applications joined with monthly macroeconomic scenario data, leakage-safe time split, reproducible Logistic Regression vs HistGradientBoosting comparison, JSON metrics, joblib inference artifact and model card. Pandas and PySpark source transformation parity is checked separately in CI. This does not claim a production Spark cluster or real bank decisions.
+
+---
+
+
 ## New flagship: Independent Model Risk Validation & Monitoring
 
 **[Model Risk Validation & Monitoring — challenger ML, OOT, drift, calibration, implementation bug hunting, agent audit](extensions/model-risk-validation/README.md)**

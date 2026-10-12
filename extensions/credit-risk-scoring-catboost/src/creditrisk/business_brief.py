@@ -53,7 +53,7 @@ def create_business_brief(n=4200,seed=42,output_dir=None):
         lines.extend(["","Risk group boundaries learned **on validation**, never on OOT.",
             "Risk groups are descriptive; thresholds require policy and asymmetric cost approval.",
             "Model risk: vintage shift, calibration, independent validation and governance are necessary before production."])
-        (folder/"business_brief.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
+        (folder/"risk_segmentation.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
     return result
 
 if __name__=="__main__":

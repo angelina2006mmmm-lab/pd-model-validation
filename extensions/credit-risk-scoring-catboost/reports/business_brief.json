@@ -1,0 +1,44 @@
+{
+  "data": "Synthetic credit applications, never live bank data",
+  "n_out_of_time": 1388,
+  "validation_bins": 5,
+  "oot_roc_auc": 0.7103,
+  "risk_groups": [
+    {
+      "group": 1,
+      "applications": 224,
+      "average_pd": 0.0295,
+      "observed_default_rate": 0.0446
+    },
+    {
+      "group": 2,
+      "applications": 256,
+      "average_pd": 0.0574,
+      "observed_default_rate": 0.0547
+    },
+    {
+      "group": 3,
+      "applications": 259,
+      "average_pd": 0.0883,
+      "observed_default_rate": 0.0888
+    },
+    {
+      "group": 4,
+      "applications": 318,
+      "average_pd": 0.1439,
+      "observed_default_rate": 0.1321
+    },
+    {
+      "group": 5,
+      "applications": 331,
+      "average_pd": 0.315,
+      "observed_default_rate": 0.2598
+    }
+  ],
+  "controls": [
+    "Only validation used to fit risk-band boundaries",
+    "Chronological data split and no target leakage",
+    "Real use would require independent validation, fairness and governance"
+  ],
+  "disclaimer": "Illustrative PD segments, not approved lending decisions."
+}

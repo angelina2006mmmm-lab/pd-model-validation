@@ -1,0 +1,12 @@
+{
+  "experiment": "PyTorch TransformerEncoder, 6 synthetic monthly financial-history steps",
+  "data_note": "Inputs built from application-time covariates only, no target leakage",
+  "train_rows": 678,
+  "validation_rows": 241,
+  "oot_rows": 481,
+  "epochs": 7,
+  "seed": 42,
+  "validation_roc_auc": 0.5865,
+  "oot_roc_auc": 0.5764,
+  "limitations": "Tiny random-initialized network, no pretrained model, not bank-grade"
+}

@@ -4,7 +4,7 @@
 
 **[Credit Risk Model Serving API — source code, model artifact, tests, design](extensions/credit-risk-model-serving/README.md)**
 
-Versioned REST implementation of a PD risk-strategy prototype: trained sklearn logistic model, JSON artifact, Pydantic validation, synthetic test ROC-AUC, model version, structured logs with no raw applicant data, and 15 local unit/integration tests. Nginx/Jenkins/OpenShift examples are templates and have NOT been deployed.
+Versioned REST implementation of a PD risk-strategy prototype: trained sklearn logistic model, JSON artifact, Pydantic validation, non-temporal synthetic test ROC-AUC, model version, structured logs with no raw applicant data, and 20 verified unit/integration tests. Nginx/Jenkins/OpenShift examples are templates and have NOT been deployed.
 
 ---
 

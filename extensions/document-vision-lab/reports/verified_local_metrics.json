@@ -33,8 +33,16 @@
     "cnn_rotation_12deg": 1
   },
   "local_tests": {
-    "passed": 14
+    "passed": 17
   },
   "methodology": "train/val/test split, checkpoint chosen by validation, synthetic test held out",
-  "limitations": "Results on simple synthetic layouts, not evidence of OCR/VLM or production performance. CPU times from one machine; DVC and MLflow only prepared, not executed."
+  "limitations": "Results on simple synthetic layouts, not evidence of OCR/VLM or production performance. CPU times from one machine; DVC and MLflow only prepared, not executed.",
+  "ocr": {
+    "engine": "pretrained Tesseract",
+    "forms": 20,
+    "fields": 40,
+    "field_exact_match": 1,
+    "p50_latency_ms": 134.42,
+    "limitation": "clean fake forms only"
+  }
 }

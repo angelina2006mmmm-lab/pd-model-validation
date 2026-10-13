@@ -2,6 +2,15 @@
 
 **Educational portfolio** for a Computer Vision ML Engineer internship, focused on classification of synthetic document-like images and end-to-end ML engineering. NOT a banking OCR system, personal-data extraction or production VLM.
 
+## Reproducible MLOps — actual DVC and MLflow execution
+
+[Verified DVC + MLflow GitHub Actions run](https://github.com/angelina2006mmmm-lab/pd-model-validation/actions/runs/38380044243):
+
+- `dvc init --no-scm` then `dvc repro` ran **dataset / cnn_train / vit_train**. A real `dvc.lock` was produced and included with the CI artifact. Running `dvc status` reported that the data and pipeline were up to date.
+- **MLflow** created and verified **two actual local file-backed runs** (CNN and ViT), logging hyperparameters, held-out synthetic test metrics, per-epoch training and validation history and metrics JSON. The runs were independently inspected via `MlflowClient.get_run`.
+- [Source: MLflow tracking implementation](docvision/mlflow_tracking.py) · [Reproducibility workflow](../../.github/workflows/document-vision-mlops.yml). These are local CI runs, not an enterprise MLflow tracking server.
+
+
 ## Verified local experiments
 
 - **Dataset:** 660 programmatically generated 96×64 RGB images representing three synthetic layouts: card, passport-like page and driver's license-like page. Stratified class splits: 450 train, 105 validation, 105 test. No real personal data.
@@ -11,7 +20,7 @@
 - **Stress-test of CNN on the same held-out samples:** original accuracy **1.0000**, blur σ=2 px **0.9619**, 50% brightness **0.3333**, 12° rotation **1.0000**. Accuracy drops heavily under darkness; this failure is documented rather than hidden.
 - **OCR field extraction:** real pretrained Tesseract OCR (not a trained model or VLM) on **20 fake printed forms / 40 fields**; clean-template exact match **40/40** locally, median around **134 ms/field-pair** on this CPU. This is NOT evidence on genuine IDs/cards or unstructured bank documents.
 - **Serving:** TorchScript model export; FastAPI /predict (image/png|jpeg|webp, 2 MB limit, strict validation) + /health; API/inference integration tests.
-- **Engineering:** pytest, reproducible dataset generation, CI training/evaluation, configured DVC pipeline. An optional MLflow adapter is included but DVC and MLflow execution have **not** been verified; these are configurations, not demonstrated experience.
+- **Engineering:** pytest, reproducible dataset generation, CI training/evaluation, DVC's 3-stage pipeline and two real MLflow training runs verified in independent GitHub Actions.
 
 ## Reproduce locally
 

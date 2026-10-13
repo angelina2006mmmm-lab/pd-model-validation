@@ -1,0 +1,24 @@
+name: CORD direct parquet dataset probe
+on:
+  push:
+    paths:
+      - 'extensions/document-vision-lab/docvision/cord_probe.py'
+      - '.github/workflows/cord-receipt-parquet-probe.yml'
+  workflow_dispatch:
+jobs:
+  download-cord-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: extensions/document-vision-lab
+    env:
+      HF_HUB_DOWNLOAD_TIMEOUT: '180'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: 
+          python-version: '3.11'
+      - run: pip install 'huggingface_hub>=0.31,<1' 'pyarrow>=16,<23'
+      - run: python -m docvision.cord_probe

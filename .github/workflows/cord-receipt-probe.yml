@@ -1,0 +1,21 @@
+name: CORD real receipt dataset inspection
+on:
+  push:
+    paths:
+      - 'extensions/document-vision-lab/docvision/cord_probe.py'
+      - '.github/workflows/cord-receipt-probe.yml'
+  workflow_dispatch:
+jobs:
+  public-dataset-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: extensions/document-vision-lab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - run: python -m docvision.cord_probe

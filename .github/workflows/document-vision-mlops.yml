@@ -1,0 +1,59 @@
+name: Document Vision MLOps - real DVC and MLflow runs
+on:
+  push:
+    paths:
+      - 'extensions/document-vision-lab/**'
+      - '.github/workflows/document-vision-mlops.yml'
+  workflow_dispatch:
+jobs:
+  dvc-mlflow-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: extensions/document-vision-lab
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU torch
+        run: python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+      - name: Install reproducibility tools and CV dependencies
+        run: |
+          python -m pip install 'dvc>=3.60,<4' 'mlflow>=2.20,<3' 'numpy>=1.26,<3' 'Pillow>=10,<13'
+      - name: Initialize actual DVC repository and reproduce whole CV pipeline
+        run: |
+          dvc init --no-scm
+          dvc repro
+          test -s dvc.lock
+          dvc status | tee dvc_status.txt
+          test -f artifacts/cnn_metrics.json
+          test -f artifacts/vit_metrics.json
+      - name: Log real trained models in local MLflow and verify runs
+        run: python -m docvision.mlflow_tracking --metrics-dir artifacts --store mlruns --report reports/mlflow_verified_runs.json
+      - name: Verify DVC lock integrity
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from yaml import safe_load
+          doc=safe_load(Path('dvc.lock').read_text())
+          assert len(doc.get('stages',{}))>=3
+          assert Path('reports/mlflow_verified_runs.json').exists()
+          report=json.loads(Path('reports/mlflow_verified_runs.json').read_text())
+          assert report['verified_runs']==2
+          print('DVC_STAGES:',list(doc['stages']))
+          print('MLFLOW_VERIFIED_RUNS:',report['verified_runs'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-dvc-mlflow-runs
+          path: |
+            extensions/document-vision-lab/dvc.lock
+            extensions/document-vision-lab/dvc_status.txt
+            extensions/document-vision-lab/reports/mlflow_verified_runs.json
+            extensions/document-vision-lab/artifacts/*_metrics.json

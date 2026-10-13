@@ -1,0 +1,10 @@
+{
+  "source": "synthetic printed test forms",
+  "engine": "pretrained Tesseract --psm 6",
+  "forms": 20,
+  "fields": 40,
+  "field_exact_match": 1,
+  "p50_latency_ms": 134.42,
+  "failures": [],
+  "limitations": "Clean synthetic forms only; not OCR on real cards/passports/policies or VLM"
+}

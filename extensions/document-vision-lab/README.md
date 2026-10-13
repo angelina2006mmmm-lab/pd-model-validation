@@ -2,6 +2,18 @@
 
 **Educational portfolio** for a Computer Vision ML Engineer internship, focused on classification of synthetic document-like images and end-to-end ML engineering. NOT a banking OCR system, personal-data extraction or production VLM.
 
+## Real scanned receipts: verified Donut VLM vs Tesseract (October 2026)
+
+[**Successful independent workflow**](https://github.com/angelina2006mmmm-lab/pd-model-validation/actions/runs/38380950953) · [Published measured summary](reports/verified_cord20_results.json) · [Data provenance and licenses](docs/REAL_DOCUMENT_DATASET.md)
+
+- **20 genuine CORD-v2 test receipt scans** (public CC-BY 4.0), of which **19** contain an evaluable labelled total amount.
+- **Donut** (`naver-clova-ix/donut-base-finetuned-cord-v2`): **18/19 (94.74%)** total-amount exact match on the annotated subset. `DonutProcessor.token2json` output parse success: **20/20**.
+- **Tesseract OCR + explicit TOTAL regex baseline:** **1/19 (5.26%)** exact match on precisely the same subset. This weak text+regex baseline is **not** an optimized OCR system.
+- **CPU median inference:** Donut **6.23 s/image**, Tesseract **0.46 s/image** on that CI runner. Not production latency.
+- Real images are downloaded during CI and not committed. The Donut model was pretrained and fine-tuned **by its original authors**: this project performed inference, structured-field extraction and evaluation, **not VLM fine-tuning**.
+
+These limited results do not establish robustness on real passports, driver licenses, bank cards or insurance documents. An independently annotated, larger and more diverse evaluation is needed.
+
 ## Reproducible MLOps — actual DVC and MLflow execution
 
 [Verified DVC + MLflow GitHub Actions run](https://github.com/angelina2006mmmm-lab/pd-model-validation/actions/runs/38380044243):

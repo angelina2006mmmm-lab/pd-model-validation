@@ -1,5 +1,10 @@
 # Credit Risk Model Validation
 
+## Computer Vision — documented, verified CV/MLOps research
+
+[Document Vision Lab](extensions/document-vision-lab/README.md): CNN and ViT training on 660 synthetic images, TorchScript and FastAPI, **DVC 3-stage reproduction**, **two MLflow experiments** and a real-document field extraction benchmark using pretrained **Donut on 20 publicly licensed CORD receipts** (18/19 evaluable totals correct). [DVC/MLflow CI](https://github.com/angelina2006mmmm-lab/pd-model-validation/actions/runs/38380044243) · [Donut vs Tesseract CI](https://github.com/angelina2006mmmm-lab/pd-model-validation/actions/runs/38380950953). Models are educational and Donut inference is not self-fine-tuning.
+
+
 ## New: Retail Credit DS Lifecycle (ML + PySpark)
 
 **[Retail Credit DS Lifecycle — data quality, two-source ETL, Spark, champion/challenger, OOT, model card](extensions/retail-credit-ds-lifecycle/README.md)**

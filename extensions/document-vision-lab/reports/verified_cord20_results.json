@@ -1,0 +1,18 @@
+{
+  "dataset": "CORD v2 real receipt scans (CC-BY-4.0)",
+  "split": "test",
+  "evaluated_images": 20,
+  "annotated_totals": 19,
+  "pretrained_model": "naver-clova-ix/donut-base-finetuned-cord-v2",
+  "model_role": "pretrained fine-tuned vision-language document parser; inference only",
+  "evaluation": "total.total_price extraction exact-match after digits-only normalization",
+  "donut_correct": 18,
+  "donut_total_exact_match_rate": 0.9474,
+  "tesseract_plus_regex_correct": 1,
+  "tesseract_plus_regex_total_exact_match_rate": 0.0526,
+  "structured_output_rate": 1,
+  "median_latency_ms_donut": 6234.26,
+  "median_latency_ms_tesseract": 458.77,
+  "verification": "https://github.com/angelina2006mmmm-lab/pd-model-validation/actions/runs/38380950953",
+  "limitations": "n=19 annotated values; test samples same domain as upstream pretrained Donut training; no model fine-tuning performed by this project; no passport/card OCR or production hardware benchmark"
+}

@@ -28,10 +28,15 @@ jobs:
       - name: Install document VLM and dataset tools
         run: |
           python -m pip install 'transformers==4.50.3' 'timm>=1,<2' 'sentencepiece>=0.2,<1' 'protobuf>=4,<7' 'Pillow>=10,<13' 'pyarrow>=16,<23' 'huggingface_hub>=0.31,<1' 'numpy>=1.26,<3' 'pytest>=8,<10'
+      - name: Install Tesseract baseline
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y tesseract-ocr
+          python -m pip install pytesseract
       - name: Unit-test field extraction and normalization
         run: python -m pytest -q tests/test_real_cord_vlm.py
       - name: Real OCR-free document VLM inference on CC BY 4.0 receipt scans
-        run: python -m docvision.real_cord_vlm --n 3
+        run: python -m docvision.real_cord_vlm --n 20
       - uses: actions/upload-artifact@v4
         with:
           name: real-cord-pretrained-donut-vlm-metrics

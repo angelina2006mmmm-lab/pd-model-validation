@@ -66,11 +66,21 @@ def infer_donut(image,proc,model):
     except Exception:
         prediction={}
     return prediction,generated[:450]
-def benchmark(n=3,output="reports/cord_real_receipt_donut.json"):
+def baseline_total(image):
+    """Tesseract text -> regex baseline (not a trained structure parser)."""
+    import pytesseract
+    raw=pytesseract.image_to_string(image,config="--psm 6")
+    found=re.findall(r"(?im)^\s*(?:grand\s+)?total\s*:?\s*(?:rp\s*)?([\d.,]+)",raw)
+    return norm_price(found[-1]) if found else ""
+
+def benchmark(n=20,output="reports/cord_real_receipt_donut.json"):
     pairs=list(rows(n))
     proc,model=init_donut()
     result=[]
     for idx,(image,gt) in enumerate(pairs):
+        simple_start=time.perf_counter()
+        tesseract_price=baseline_total(image)
+        simple_ms=(time.perf_counter()-simple_start)*1000
         start=time.perf_counter()
         parsed,raw=infer_donut(image,proc,model)
         elapsed=(time.perf_counter()-start)*1000
@@ -78,18 +88,25 @@ def benchmark(n=3,output="reports/cord_real_receipt_donut.json"):
         result.append({"image_index":idx,"expected_total_digits":expected,
            "predicted_total_digits":predicted,
            "total_exact_match":bool(expected) and expected==predicted,
+           "tesseract_total_digits":tesseract_price,
+           "tesseract_exact_match":bool(expected) and expected==tesseract_price,
+           "tesseract_latency_ms":round(simple_ms,2),
            "has_structured_output":bool(parsed),
            "latency_ms":round(elapsed,2),"prediction_example":raw[:120]})
     total=len(result);latencies=sorted(x["latency_ms"] for x in result)
+    eligible=sum(bool(x["expected_total_digits"]) for x in result)
+    if eligible==0:raise ValueError("No ground truth prices found")
     summary={
      "dataset":"CORD-v2 test split, genuine publicly released receipt images",
      "dataset_license":"CC-BY-4.0","model":VLM,"model_task":"pretrained Donut image-to-structured-text VLM inference",
      "method":"offline evaluation, deterministic prefix decoding; no fine-tuning in project",
      "receipts_evaluated":total,
-     "receipts_with_groundtruth_total":sum(bool(x["expected_total_digits"]) for x in result),
-     "total_price_exact_match_rate":round(sum(x["total_exact_match"] for x in result)/total,4),
+     "receipts_with_groundtruth_total":eligible,
+     "total_price_exact_match_rate":round(sum(x["total_exact_match"] for x in result)/eligible,4),
+     "tesseract_baseline_total_exact_match_rate":round(sum(x["tesseract_exact_match"] for x in result)/eligible,4),
      "structured_output_rate":round(sum(x["has_structured_output"] for x in result)/total,4),
      "p50_latency_ms":round(statistics.median(latencies),2),
+     "tesseract_p50_latency_ms":round(statistics.median(x["tesseract_latency_ms"] for x in result),2),
      "individual_cases":result,
      "limitations":"Tiny sample; receipt domain only, no bank card/passport OCR; CPU benchmark not production SLA. Pretrained weights, not trained in project."
     }
@@ -98,6 +115,6 @@ def benchmark(n=3,output="reports/cord_real_receipt_donut.json"):
     print(json.dumps(summary,ensure_ascii=False,indent=2))
     return summary
 if __name__=="__main__":
-    a=argparse.ArgumentParser();a.add_argument("--n",type=int,default=3)
+    a=argparse.ArgumentParser();a.add_argument("--n",type=int,default=20)
     a.add_argument("--output",default="reports/cord_real_receipt_donut.json")
     x=a.parse_args();benchmark(x.n,x.output)

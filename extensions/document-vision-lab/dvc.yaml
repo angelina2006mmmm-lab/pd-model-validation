@@ -1,0 +1,25 @@
+stages:
+  dataset:
+    cmd: python -c "from docvision.data import generate;generate('data')"
+    deps:
+      - docvision/data.py
+    outs:
+      - data
+  cnn_train:
+    cmd: python -m docvision.train --model cnn --epochs 5
+    deps: [data, docvision/train.py, docvision/models.py]
+    outs:
+      - artifacts/cnn_weights.pt
+      - artifacts/cnn_torchscript.pt
+    metrics:
+      - artifacts/cnn_metrics.json:
+          cache: false
+  vit_train:
+    cmd: python -m docvision.train --model vit --epochs 5
+    deps: [data, docvision/train.py, docvision/models.py]
+    outs:
+      - artifacts/vit_weights.pt
+      - artifacts/vit_torchscript.pt
+    metrics:
+      - artifacts/vit_metrics.json:
+          cache: false

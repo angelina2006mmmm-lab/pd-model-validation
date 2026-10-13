@@ -1,0 +1,7 @@
+numpy>=1.26,<3
+Pillow>=10,<13
+torch>=2.3,<3
+fastapi>=0.110,<1
+httpx>=0.26,<1
+pytest>=8,<10
+uvicorn>=0.29,<1

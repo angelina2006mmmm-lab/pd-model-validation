@@ -1,0 +1,36 @@
+name: Synthetic Document Vision Lab — PyTorch CI
+on:
+  push:
+    paths:
+      - 'extensions/document-vision-lab/**'
+      - '.github/workflows/document-vision-lab.yml'
+  workflow_dispatch:
+jobs:
+  pytorch-cv-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: extensions/document-vision-lab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU PyTorch
+        run: python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+      - name: Install remaining dependencies
+        run: python -m pip install 'numpy>=1.26,<3' 'Pillow>=10,<13' 'fastapi>=0.110,<1' 'httpx>=0.26,<1' 'pytest>=8,<10' 'uvicorn>=0.29,<1'
+      - name: Test data quality, models and REST API
+        run: python -m pytest -q tests/
+      - name: Train both models and evaluate synthetic image robustness
+        run: |
+          python -m docvision.train --model cnn --epochs 5
+          python -m docvision.train --model vit --epochs 5
+          python -m docvision.stress
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docvision-synthetic-evaluation
+          path: |
+            extensions/document-vision-lab/artifacts/*_metrics.json
+            extensions/document-vision-lab/reports/stress_test.json
